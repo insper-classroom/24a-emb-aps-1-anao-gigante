@@ -9,7 +9,7 @@
 #include "hardware/gpio.h"
 
 
-volatile int tam = 1;
+volatile int tam = 0;
 
 int led_red = 22;
 int led_yellow = 21;
@@ -34,6 +34,9 @@ int freq_g = 3000;
 int freq_y = 6000;
 int freq_b = 9000;
 
+int dormida = 100;
+int dormida1 = 100*2;
+volatile bool continua = true;
 
 void btn_callback(uint gpio, uint32_t events) {
   if (events == GPIO_IRQ_EDGE_FALL) { // fall edge
@@ -68,11 +71,11 @@ char* genius(int tam) {
         lista[i] = opcoes[rand() % 4]; // Mudança: Escolha uma cor aleatória
     }
     lista[tam] = '\0'; // Adiciona o caractere nulo ao final da lista
+    printf("Sequencia: %s\n", lista);
     return lista;
 }
 
-void reproduzir_sequencia(char* sequencia, int freq_r, int freq_g, int freq_y, int freq_b, int BUZZER,
-                          int led_red, int led_yellow, int led_green, int led_blue) {
+void reproduzir_sequencia(char* sequencia, int freq_r, int freq_g, int freq_y, int freq_b, int BUZZER, int led_red, int led_yellow, int led_green, int led_blue) {
     int i = 0;
     while (sequencia[i] != '\0') {
         switch (sequencia[i]) {
@@ -102,6 +105,42 @@ void reproduzir_sequencia(char* sequencia, int freq_r, int freq_g, int freq_y, i
     }
 }
 
+char* adiciona(char lista[], int tam){
+    char* opcoes = "rbgy";
+    char opcao = opcoes[rand() % 4];
+    lista[tam] = opcao;
+    lista[tam+1] = '\0';
+    printf("Sequencia: %s\n", lista);
+    return lista;
+} 
+
+void errou(int tam){
+    gpio_put(led_red,1);
+    gpio_put(led_yellow,1);
+    gpio_put(led_green,1);
+    gpio_put(led_blue,1);
+    buzzer(11000, BUZZER);
+    sleep_ms(1000);
+    gpio_put(led_red,0);
+    gpio_put(led_yellow,0);
+    gpio_put(led_green,0);
+    gpio_put(led_blue,0);
+    sleep_ms(1000);
+
+    for(int i = 1; i < tam; i++){
+        gpio_put(led_red,1);
+        gpio_put(led_yellow,1);
+        gpio_put(led_green,1);
+        gpio_put(led_blue,1);
+        sleep_ms(200);
+        printf("%d \n",i);
+        gpio_put(led_red,0);
+        gpio_put(led_yellow,0);
+        gpio_put(led_green,0);
+        gpio_put(led_blue,0);
+        sleep_ms(200);
+    }
+}
 
 int main() {
     stdio_init_all();
@@ -140,105 +179,87 @@ int main() {
     gpio_set_irq_enabled(button_yellow, GPIO_IRQ_EDGE_FALL, true);
     gpio_set_irq_enabled(button_green, GPIO_IRQ_EDGE_FALL, true);
 
-    while (true) {
-        char* sequencia = genius(tam); // Gerar a sequência
-        
+    char* sequencia = genius(tam); // Gera a sequência
+    while (continua) {
+        tam = strlen(sequencia);
+        // dormida = dormida/(tam/2);
+        sequencia = adiciona(sequencia, tam);
         reproduzir_sequencia(sequencia, freq_r, freq_g, freq_y, freq_b, BUZZER, led_red, led_yellow, led_green, led_blue);
         int contagem = 0;
-        while (contagem < tam) {
+        while (contagem < tam+1) {
             if (vermelho) {
-                if (sequencia[0] == 'r') {
+                if (sequencia[contagem] == 'r') {
                     gpio_put(led_red,1);
                     buzzer(freq_r, BUZZER);
-                    sleep_ms(100);
                     vermelho = false;
                     printf("Vermelho\n");
+                    sleep_ms(dormida);
                     gpio_put(led_red,0);
+                    sleep_ms(dormida1);
                     contagem++;
                 } else {
                     printf("ERRO\n");
-                    break;
+                    continua = false;
+                    errou(tam);
+                    abort();
+                    printf("abortou\n");
+
                 }
             } else if (verde) {
-                if (sequencia[0] == 'g') {
+                if (sequencia[contagem] == 'g') {
                     gpio_put(led_green,1);
                     buzzer(freq_g, BUZZER);
-                    sleep_ms(100);
+                    sleep_ms(dormida);
                     verde = false;
                     printf("Verde\n");
                     gpio_put(led_green,0);
+                    sleep_ms(dormida1);
                     contagem++;
                 } else {
                     printf("ERRO\n");
-                    break;
+                    continua = false;
+                    errou(tam);
+                    abort();
+                    printf("abortou\n");
+
                 }
             } else if (amarelo) {
-                if (sequencia[0] == 'y') {
+                if (sequencia[contagem] == 'y') {
                     gpio_put(led_yellow,1);
                     buzzer(freq_y, BUZZER);
-                    sleep_ms(100);
+                    sleep_ms(dormida);
                     amarelo = false;
                     printf("Amarelo\n");
                     gpio_put(led_yellow,0);
+                    sleep_ms(dormida1);
                     contagem++;
                 } else {
                     printf("ERRO\n");
-                    break;
+                    continua = false;
+                    errou(tam);
+                    abort();
+                    printf("abortou\n");
+
                 }
             } else if (azul) {
-                if (sequencia[0] == 'b') {
+                if (sequencia[contagem] == 'b') {
                     gpio_put(led_blue,1);
                     buzzer(freq_b, BUZZER);
-                    sleep_ms(100);
+                    sleep_ms(dormida);
                     azul = false;
                     printf("Azul\n");
                     gpio_put(led_blue,0);
+                    sleep_ms(dormida1);
                     contagem++;
                 } else {
                     printf("ERRO\n");
-                    break;
+                    continua = false;
+                    errou(tam);
+                    abort();
+                    printf("abortou\n");
                 }
             }
         }
         
     }
 }
-
-
-//     while (true) {
-
-//         if (vermelho) {
-//             gpio_put(led_red,1);
-//             buzzer(freq_r, BUZZER);
-//             sleep_ms(100);
-//             vermelho = false;
-//             printf("Vermelho\n");
-//             gpio_put(led_red,0);
-
-//         }
-//         if (verde) {
-//             gpio_put(led_green,1);
-//             buzzer(freq_g, BUZZER);
-//             sleep_ms(100);
-//             verde = false;
-//             printf("Verde\n");
-//             gpio_put(led_green,0);
-//         }
-//         if (amarelo) {
-//             gpio_put(led_yellow,1);
-//             buzzer(freq_y, BUZZER);
-//             sleep_ms(100);
-//             amarelo = false;
-//             printf("Amarelo\n");
-//             gpio_put(led_yellow,0);
-//         }
-//         if (azul) {
-//             gpio_put(led_blue,1);
-//             buzzer(freq_b, BUZZER);
-//             sleep_ms(100);
-//             azul = false;
-//             printf("Azul\n");
-//             gpio_put(led_blue,0);
-//         }
-//     }
-// }
