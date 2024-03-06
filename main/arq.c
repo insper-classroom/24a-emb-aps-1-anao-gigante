@@ -1,36 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
+#include "arq.h"
 
-
-volatile int tam = 0;
-
-int led_red = 22;
-int led_yellow = 21;
-int led_green = 11;
-int led_blue = 10;
-
-int button_red = 17;
-int button_yellow = 14;
-int button_green = 13;
-int button_blue = 20;
-
-int BUZZER = 7;
-
-volatile bool vermelho = false;
-volatile bool verde = false;
-volatile bool amarelo = false;
-volatile bool azul = false;
-
-int time = 1;
-int freq_r = 784 ;
-int freq_g = 659;
-int freq_y = 523 ;
-int freq_b = 440;
-
-int dormida = 100;
-int dormida1 = 100*2;
-volatile bool continua = true;
 
 void btn_callback(uint gpio, uint32_t events) {
   if (events == GPIO_IRQ_EDGE_FALL) { // fall edge

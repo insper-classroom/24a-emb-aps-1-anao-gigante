@@ -1,19 +1,42 @@
-/**
- * Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
-#include "main.h"
+#include "arq.h"
 
 
+int button_red = 17;
+int button_yellow = 14;
+int button_green = 13;
+int button_blue = 20;
+
+volatile bool vermelho = false;
+volatile bool verde = false;
+volatile bool amarelo = false;
+volatile bool azul = false;
+
+int BUZZER = 7;
+
+int led_red = 22;
+int led_yellow = 21;
+int led_green = 11;
+int led_blue = 10;
+
+int time = 1;
+int freq_r = 1000;
+int freq_g = 3000;
+int freq_y = 6000;
+int freq_b = 9000;
 
 
 int main() {
     stdio_init_all();
+    int dormida = 100;
+    int dormida1 = 100*2;
+    volatile bool continua = true;
+
+    char* sequencia = genius(0); // Gera a sequência
 
     gpio_init(led_red);
     gpio_init(led_yellow);
@@ -49,9 +72,6 @@ int main() {
     gpio_set_irq_enabled(button_yellow, GPIO_IRQ_EDGE_FALL, true);
     gpio_set_irq_enabled(button_green, GPIO_IRQ_EDGE_FALL, true);
 
-    char* sequencia = genius(tam); // Gera a sequência
-
-
     while(!vermelho && !azul && !verde && !amarelo){}
     iniciando();
     vermelho = false;
@@ -63,7 +83,7 @@ int main() {
     srand(start_us);
 
     while (continua) {
-        tam = strlen(sequencia);
+        int tam = strlen(sequencia);
         // dormida = dormida/(tam/2);   
         sequencia = adiciona(sequencia, tam);
         reproduzir_sequencia(sequencia, freq_r, freq_g, freq_y, freq_b, BUZZER, led_red, led_yellow, led_green, led_blue); 
