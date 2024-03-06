@@ -132,6 +132,7 @@ void errou(int tam){
         gpio_put(led_yellow,1);
         gpio_put(led_green,1);
         gpio_put(led_blue,1);
+        buzzer(freq_b, BUZZER);
         sleep_ms(200);
         printf("%d \n",i);
         gpio_put(led_red,0);
@@ -140,6 +141,28 @@ void errou(int tam){
         gpio_put(led_blue,0);
         sleep_ms(200);
     }
+}
+
+void iniciando(){
+    for(int i = 0; i < 3; i++){
+        gpio_put(led_red,1);
+        buzzer(freq_r, BUZZER);
+        gpio_put(led_yellow,1);
+        buzzer(freq_y, BUZZER);
+        gpio_put(led_green,1);
+        buzzer(freq_g, BUZZER);
+        gpio_put(led_blue,1);
+        buzzer(freq_b, BUZZER);
+        sleep_ms(50);
+        printf("%d \n",i);
+        gpio_put(led_red,0);
+        gpio_put(led_yellow,0);
+        gpio_put(led_green,0);
+        gpio_put(led_blue,0);
+        sleep_ms(50);
+    }
+    sleep_ms(1000);
+    
 }
 
 int main() {
@@ -183,6 +206,7 @@ int main() {
 
 
     while(!vermelho && !azul && !verde && !amarelo){}
+    iniciando();
     vermelho = false;
     azul = false;
     verde = false;
@@ -193,9 +217,9 @@ int main() {
 
     while (continua) {
         tam = strlen(sequencia);
-        // dormida = dormida/(tam/2);
+        // dormida = dormida/(tam/2);   
         sequencia = adiciona(sequencia, tam);
-        reproduzir_sequencia(sequencia, freq_r, freq_g, freq_y, freq_b, BUZZER, led_red, led_yellow, led_green, led_blue);
+        reproduzir_sequencia(sequencia, freq_r, freq_g, freq_y, freq_b, BUZZER, led_red, led_yellow, led_green, led_blue); 
         int contagem = 0;
         while (contagem < tam+1) {
             if (vermelho) {
