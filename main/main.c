@@ -180,6 +180,17 @@ int main() {
     gpio_set_irq_enabled(button_green, GPIO_IRQ_EDGE_FALL, true);
 
     char* sequencia = genius(tam); // Gera a sequência
+
+
+    while(!vermelho && !azul && !verde && !amarelo){}
+    vermelho = false;
+    azul = false;
+    verde = false;
+    amarelo = false;
+
+    uint64_t start_us = to_us_since_boot(get_absolute_time());
+    srand(start_us);
+
     while (continua) {
         tam = strlen(sequencia);
         // dormida = dormida/(tam/2);
