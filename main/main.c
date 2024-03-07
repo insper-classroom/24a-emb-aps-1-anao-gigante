@@ -11,10 +11,15 @@ int button_yellow = 14;
 int button_green = 13;
 int button_blue = 20;
 
-volatile bool vermelho = false;
-volatile bool verde = false;
-volatile bool amarelo = false;
-volatile bool azul = false;
+// volatile bool vermelho = false;
+// volatile bool verde = false;
+// volatile bool amarelo = false;
+// volatile bool azul = false;
+
+bool vermelho = false;
+bool verde = false;
+bool amarelo = false;
+bool azul = false;
 
 int BUZZER = 7;
 
@@ -34,7 +39,7 @@ int main() {
     stdio_init_all();
     int dormida = 100;
     int dormida1 = 100*2;
-    volatile bool continua = true;
+    bool continua = true;
 
     char* sequencia = genius(0); // Gera a sequência
 
