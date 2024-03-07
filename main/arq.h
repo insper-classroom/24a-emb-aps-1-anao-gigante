@@ -8,15 +8,15 @@ extern int button_yellow;
 extern int button_green;
 extern int button_blue;
 
-// extern volatile bool vermelho;
-// extern volatile bool verde;
-// extern volatile bool amarelo;
-// extern volatile bool azul;
+extern volatile bool vermelho;
+extern volatile bool verde;
+extern volatile bool amarelo;
+extern volatile bool azul;
 
-extern bool vermelho;
-extern bool verde;
-extern bool amarelo;
-extern bool azul;
+// extern bool vermelho;
+// extern bool verde;
+// extern bool amarelo;
+// extern bool azul;
 
 extern int BUZZER;
 
