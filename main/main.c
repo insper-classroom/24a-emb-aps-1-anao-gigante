@@ -119,7 +119,6 @@ int main() {
                     continua = false;
                     errou(tam);
                     abort();
-                    printf("abortou\n");
 
                 }
             } else if (verde) {
@@ -138,7 +137,6 @@ int main() {
                     continua = false;
                     errou(tam);
                     abort();
-                    printf("abortou\n");
 
                 }
             } else if (amarelo) {
@@ -157,7 +155,6 @@ int main() {
                     continua = false;
                     errou(tam);
                     abort();
-                    printf("abortou\n");
 
                 }
             } else if (azul) {
@@ -176,7 +173,6 @@ int main() {
                     continua = false;
                     errou(tam);
                     abort();
-                    printf("abortou\n");
                 }
             }
         }
