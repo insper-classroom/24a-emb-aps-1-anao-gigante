@@ -90,18 +90,16 @@ int main() {
         srand(seed);
         sequencia = adiciona(sequencia, tam);
         reproduzir_sequencia(sequencia, freq_r, freq_g, freq_y, freq_b, BUZZER, led_red, led_yellow, led_green, led_blue); 
-        uint64_t tempo;
         uint64_t start_us = to_us_since_boot(get_absolute_time());
         int contagem = 0;
         while (contagem < tam+1) {
-            tempo = to_us_since_boot(get_absolute_time());
+            uint64_t tempo = to_us_since_boot(get_absolute_time());
             // printf("tempo: %llu\n", tempo - start_us);
             // printf("tempo: %llu\n", (tempo/us) - (start_us/us));
             if (tempo - start_us > limite) {
                 continua = false;
                 errou(tam);
                 abort();
-                printf("abortou\n");
             }
             if (vermelho) {
                 if (sequencia[contagem] == 'r') {
