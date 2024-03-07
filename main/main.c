@@ -79,6 +79,8 @@ int main() {
 
     while(!vermelho && !azul && !verde && !amarelo){}
     iniciando();
+    sleep_ms(500);
+    indiana_jones();
     vermelho = false;
     azul = false;
     verde = false;

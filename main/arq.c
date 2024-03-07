@@ -32,6 +32,38 @@ void buzzer(int frequencia, int pin){
     }
 }
 
+void indiana_jones(){
+
+    int freq_re = 293;
+    int freq_mi = 330;
+    int freq_sol = 392;
+    int freq_la = 440;
+    int freq_si = 494;
+
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_mi, BUZZER);
+    buzzer(freq_sol,BUZZER);
+    buzzer(freq_la, BUZZER);
+    buzzer(freq_sol,BUZZER);
+    buzzer(freq_mi, BUZZER);
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_re, BUZZER);
+    buzzer(freq_mi, BUZZER);
+    buzzer(freq_sol,BUZZER);
+    buzzer(freq_la, BUZZER);
+    buzzer(freq_si, BUZZER);
+    buzzer(freq_la, BUZZER);
+    buzzer(freq_sol,BUZZER);
+    buzzer(freq_mi, BUZZER);
+    buzzer(freq_re, BUZZER);
+    
+    }
+
 char* genius(int tam) {
     char* opcoes = "rbgy"; // Mudança: Use uma string para as opções
     char* lista = malloc((tam + 1) * sizeof(char)); // Aloca espaço para a lista
