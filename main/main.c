@@ -79,16 +79,30 @@ int main() {
     verde = false;
     amarelo = false;
 
-    uint64_t start_us = to_us_since_boot(get_absolute_time());
-    srand(start_us);
+    
+    int us = 1000000;
+    int limite = 15*us;
 
+    
     while (continua) {
         int tam = strlen(sequencia);
-        // dormida = dormida/(tam/2);   
+        uint64_t seed = to_us_since_boot(get_absolute_time());
+        srand(seed);
         sequencia = adiciona(sequencia, tam);
         reproduzir_sequencia(sequencia, freq_r, freq_g, freq_y, freq_b, BUZZER, led_red, led_yellow, led_green, led_blue); 
+        uint64_t tempo;
+        uint64_t start_us = to_us_since_boot(get_absolute_time());
         int contagem = 0;
         while (contagem < tam+1) {
+            tempo = to_us_since_boot(get_absolute_time());
+            // printf("tempo: %llu\n", tempo - start_us);
+            // printf("tempo: %llu\n", (tempo/us) - (start_us/us));
+            if (tempo - start_us > limite) {
+                continua = false;
+                errou(tam);
+                abort();
+                printf("abortou\n");
+            }
             if (vermelho) {
                 if (sequencia[contagem] == 'r') {
                     gpio_put(led_red,1);
@@ -99,6 +113,7 @@ int main() {
                     gpio_put(led_red,0);
                     sleep_ms(dormida1);
                     contagem++;
+                    start_us = to_us_since_boot(get_absolute_time());
                 } else {
                     printf("ERRO\n");
                     continua = false;
@@ -117,6 +132,7 @@ int main() {
                     gpio_put(led_green,0);
                     sleep_ms(dormida1);
                     contagem++;
+                    start_us = to_us_since_boot(get_absolute_time());
                 } else {
                     printf("ERRO\n");
                     continua = false;
@@ -135,6 +151,7 @@ int main() {
                     gpio_put(led_yellow,0);
                     sleep_ms(dormida1);
                     contagem++;
+                    start_us = to_us_since_boot(get_absolute_time());
                 } else {
                     printf("ERRO\n");
                     continua = false;
@@ -153,6 +170,7 @@ int main() {
                     gpio_put(led_blue,0);
                     sleep_ms(dormida1);
                     contagem++;
+                    start_us = to_us_since_boot(get_absolute_time());
                 } else {
                     printf("ERRO\n");
                     continua = false;
@@ -162,6 +180,8 @@ int main() {
                 }
             }
         }
+
+        // limite = limite + us;
         
     }
 }
