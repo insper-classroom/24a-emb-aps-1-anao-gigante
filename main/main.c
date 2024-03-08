@@ -16,11 +16,6 @@ volatile bool verde = false;
 volatile bool amarelo = false;
 volatile bool azul = false;
 
-// bool vermelho = false;
-// bool verde = false;
-// bool amarelo = false;
-// bool azul = false;
-
 int BUZZER = 7;
 
 int led_red = 22;
@@ -78,9 +73,10 @@ int main() {
     gpio_set_irq_enabled(button_green, GPIO_IRQ_EDGE_FALL, true);
 
     while(!vermelho && !azul && !verde && !amarelo){}
+    indiana_jones();
+    sleep_ms(500);
     iniciando();
     sleep_ms(500);
-    indiana_jones();
     vermelho = false;
     azul = false;
     verde = false;
@@ -101,8 +97,6 @@ int main() {
         int contagem = 0;
         while (contagem < tam+1) {
             uint64_t tempo = to_us_since_boot(get_absolute_time());
-            // printf("tempo: %llu\n", tempo - start_us);
-            // printf("tempo: %llu\n", (tempo/us) - (start_us/us));
             if (tempo - start_us > limite) {
                 continua = false;
                 errou(tam);
@@ -181,8 +175,6 @@ int main() {
                 }
             }
         }
-
-        // limite = limite + us;
         
     }
 }
