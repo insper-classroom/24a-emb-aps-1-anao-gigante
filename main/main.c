@@ -11,10 +11,10 @@ int button_yellow = 14;
 int button_green = 13;
 int button_blue = 20;
 
-volatile bool vermelho = false;
-volatile bool verde = false;
-volatile bool amarelo = false;
-volatile bool azul = false;
+volatile int vermelho = 0;
+volatile int verde = 0;
+volatile int amarelo = 0;
+volatile int azul = 0;
 
 int BUZZER = 7;
 
@@ -77,10 +77,10 @@ int main() {
     sleep_ms(500);
     iniciando();
     sleep_ms(500);
-    vermelho = false;
-    azul = false;
-    verde = false;
-    amarelo = false;
+    vermelho = 0;
+    azul = 0;
+    verde = 0;
+    amarelo = 0;
 
     
     int us = 1000000;

@@ -10,13 +10,13 @@
 void btn_callback(uint gpio, uint32_t events) {
   if (events == GPIO_IRQ_EDGE_FALL) { // fall edge
     if (gpio == button_red) {
-      vermelho = true;
+      vermelho = 1;
     }else if (gpio == button_green) {
-      verde = true;
+      verde = 1;
     }else if (gpio == button_yellow) {
-        amarelo = true;
+        amarelo = 1;
     }else if (gpio == button_blue) {
-        azul = true;
+        azul = 1;
     }
 }}
 
